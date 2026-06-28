@@ -1,0 +1,6 @@
+{
+  "rewrites": [{ "source": "/api/(.*)", "destination": "https://YOUR_BACKEND_URL/api/$1" }],
+  "buildCommand": "npm run build",
+  "outputDirectory": "dist",
+  "framework": "vite"
+}

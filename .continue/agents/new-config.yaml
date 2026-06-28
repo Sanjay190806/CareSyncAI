@@ -1,0 +1,48 @@
+cat > ~/.continue/config.yaml <<'YAML'
+name: Local Ollama Assistant
+version: 1.0.0
+schema: v1
+
+models:
+  - name: Qwen 3.5 9B
+    provider: ollama
+    model: qwen3.5:9b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+      - apply
+
+  - name: Qwen 2.5 Coder 7B
+    provider: ollama
+    model: qwen2.5-coder:7b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+      - apply
+      - autocomplete
+
+  - name: DeepSeek R1 8B
+    provider: ollama
+    model: deepseek-r1:8b
+    apiBase: http://localhost:11434
+    roles:
+      - chat
+      - edit
+
+context:
+  - provider: code
+  - provider: docs
+  - provider: diff
+  - provider: terminal
+
+rules:
+  - name: CareSync AI coding rules
+    rule: |
+      Prefer clean, production-style code.
+      Explain risky changes before applying.
+      For backend code, keep validation, error handling, and logging clear.
+      For frontend code, keep components readable and reusable.
+      Do not invent files unless needed.
+YAML

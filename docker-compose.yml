@@ -1,0 +1,73 @@
+# CareSync AI — local development orchestration
+# Phase 1: infrastructure wiring only; services expose health endpoints when implemented.
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: caresync-postgres
+    environment:
+      POSTGRES_USER: caresync
+      POSTGRES_PASSWORD: caresync_dev
+      POSTGRES_DB: caresync
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./database/schema.sql:/docker-entrypoint-initdb.d/01-schema.sql:ro
+      - ./database/seeds/patients_20.sql:/docker-entrypoint-initdb.d/02-seed-patients.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U caresync -d caresync"]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: caresync-backend
+    ports:
+      - "3001:3001"
+    environment:
+      NODE_ENV: development
+      PORT: 3001
+      DATABASE_URL: postgresql://caresync:caresync_dev@postgres:5432/caresync
+      AI_ENGINE_URL: http://ai-engine:8000
+      SIMULATOR_URL: http://simulator:8001
+      CORS_ORIGIN: http://localhost:5173
+    depends_on:
+      postgres:
+        condition: service_healthy
+    profiles:
+      - full
+
+  ai-engine:
+    build:
+      context: ./ai-engine
+      dockerfile: Dockerfile
+    container_name: caresync-ai-engine
+    ports:
+      - "8000:8000"
+    environment:
+      ENVIRONMENT: development
+    profiles:
+      - full
+
+  simulator:
+    build:
+      context: ./simulator
+      dockerfile: Dockerfile
+    container_name: caresync-simulator
+    ports:
+      - "8001:8001"
+    environment:
+      ENVIRONMENT: development
+      BACKEND_URL: http://backend:3001
+      REFRESH_INTERVAL_MS: 2000
+    depends_on:
+      - backend
+    profiles:
+      - full
+
+volumes:
+  postgres_data:

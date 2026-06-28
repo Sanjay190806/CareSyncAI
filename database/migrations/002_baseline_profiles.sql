@@ -1,0 +1,13 @@
+-- Phase 2 migration: baseline profiles for personalized deviation scoring
+-- Run after schema.sql when implementing baseline engine
+
+-- CREATE TABLE patient_baselines (
+--     id UUID PRIMARY KEY DEFAULT uuid_generate_v4(),
+--     patient_id UUID NOT NULL REFERENCES patients(id) ON DELETE CASCADE,
+--     vital_type VARCHAR(30) NOT NULL,
+--     baseline_mean NUMERIC(8,4) NOT NULL,
+--     baseline_std_dev NUMERIC(8,4) NOT NULL CHECK (baseline_std_dev > 0),
+--     window_minutes INT NOT NULL DEFAULT 30,
+--     updated_at TIMESTAMP WITH TIME ZONE DEFAULT CURRENT_TIMESTAMP,
+--     UNIQUE (patient_id, vital_type)
+-- );

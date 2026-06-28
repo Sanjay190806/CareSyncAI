@@ -1,0 +1,66 @@
+# Dependencies
+node_modules/
+.pnp
+.pnp.js
+
+# Build outputs
+dist/
+build/
+*.egg-info/
+.eggs/
+__pycache__/
+*.py[cod]
+*$py.class
+.Python
+*.so
+
+# Environment
+.env
+.env.local
+.env.*.local
+.venv/
+venv/
+env/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+.DS_Store
+
+# Logs
+logs/
+*.log
+npm-debug.log*
+
+# Test / coverage
+coverage/
+.coverage
+htmlcov/
+.pytest_cache/
+.nyc_output/
+
+# TypeScript
+*.tsbuildinfo
+
+# Docker
+docker-data/
+
+
+
+.venv/
+venv/
+__pycache__/
+*.pyc
+.env
+.env.local
+node_modules/
+dist/
+build/
+.streamlit/secrets.toml
+.DS_Store
+.idea/
+.vscode/
+*.sqlite3
+*.db
